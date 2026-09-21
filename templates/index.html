@@ -76,7 +76,7 @@
       {% if not resultado.manual_completo %}
         <div class="pick-hint" style="text-align:center; margin-top:14px;">Encontrado em {{ resultado.tentativas }} tentativa(s) de sorteio.</div>
       {% endif %}
-      <a href="{{ url_for('index', game=game) }}" class="clear-all-link">Apagar tudo e começar de novo</a>
+      <a href="{{ url_for('index', game=game) }}" class="clear-all-link {{ game }}">✕ Apagar tudo e começar de novo</a>
     {% else %}
       <div class="empty-state">Seu jogo aparece aqui assim que você gerar.</div>
     {% endif %}

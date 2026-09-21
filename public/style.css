@@ -134,13 +134,20 @@ h1 {
 .clear-btn.megasena:hover { background: var(--green-dim); }
 
 .clear-all-link {
-  display: block;
-  text-align: center;
-  color: var(--text-dim);
+  display: table;
+  margin: 18px auto 0;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 7px 16px;
   font-size: 12.5px;
-  text-decoration: underline;
-  margin-top: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s ease;
 }
+.clear-all-link.lotofacil { color: var(--purple); }
+.clear-all-link.lotofacil:hover { background: var(--purple-dim); }
+.clear-all-link.megasena { color: var(--green); }
+.clear-all-link.megasena:hover { background: var(--green-dim); }
 
 .go-btn {
   display: block;
