@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -80,6 +81,14 @@
     {% else %}
       <div class="empty-state">Seu jogo aparece aqui assim que você gerar.</div>
     {% endif %}
+  </div>
+
+  <div class="ad-slot">
+    <script type="text/javascript">
+      aclib.runBanner({
+        zoneId: '12201590',
+      });
+    </script>
   </div>
 
   <p class="disclaimer">Os filtros aplicados (paridade, primos, moldura, soma) refletem padrões estatísticos comuns nos sorteios anteriores, mas não alteram a probabilidade matemática de nenhuma combinação. Jogue com responsabilidade.</p>
