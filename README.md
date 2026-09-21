@@ -26,20 +26,53 @@ público — os próximos passos.
 
 ## Colocar no ar pra qualquer pessoa acessar (deploy)
 
-Opções simples e com plano gratuito pra começar:
+### GitHub + Vercel (recomendado — é o que este projeto já está pronto pra usar)
 
-- **Render.com** — conecta direto num repositório do GitHub, detecta o
-  `Procfile` e sobe sozinho. Mais fácil pra manter no ar.
-- **Railway.app** — parecido com o Render, também lê o `Procfile`.
-- **PythonAnywhere** — bom pra quem quer algo bem simples sem lidar com
-  `Procfile`/`gunicorn` (usa WSGI próprio).
+**1. Subir pro GitHub**
 
-Passo geral (Render/Railway):
-1. Suba esta pasta pra um repositório no GitHub.
-2. Crie uma conta no serviço escolhido e aponte pro repositório.
+```bash
+cd gerador_flask
+git init
+git add .
+git commit -m "primeira versão do gerador"
+```
+
+Crie um repositório vazio em github.com/new (sem README, sem .gitignore —
+já temos um aqui), depois:
+
+```bash
+git remote add origin https://github.com/SEU_USUARIO/NOME_DO_REPO.git
+git branch -M main
+git push -u origin main
+```
+
+**2. Importar na Vercel**
+
+1. Entre em vercel.com com sua conta do GitHub.
+2. Clique em "Add New… → Project" e selecione o repositório que você acabou
+   de criar.
+3. A Vercel detecta que é um app Flask automaticamente (por causa do
+   `app.py` e do `requirements.txt`) — não precisa mexer em nada, é só
+   clicar em "Deploy".
+4. Em ~1 minuto ela te dá um link público, tipo
+   `https://seu-projeto.vercel.app`. Esse é o link que qualquer pessoa
+   abre no navegador do celular.
+
+**3. Atualizações depois**
+
+Qualquer novo `git push` pra branch `main` gera um novo deploy automático.
+
+> O CSS fica na pasta `public/` (não em `static/`) porque é a convenção que
+> a Vercel usa para servir arquivos estáticos — o app já está configurado
+> pra isso, tanto local quanto lá.
+
+### Alternativas (Render / Railway)
+
+Também funcionam bem e leem o `Procfile` que já está no projeto:
+1. Suba esta pasta pra um repositório no GitHub (mesmo passo acima).
+2. Crie uma conta no Render.com ou Railway.app e aponte pro repositório.
 3. O serviço lê o `requirements.txt` e o `Procfile` e publica um link
-   público (algo como `https://seu-app.onrender.com`) — esse é o link que
-   funciona no navegador de qualquer smartphone.
+   público (algo como `https://seu-app.onrender.com`).
 
 ## Estrutura do projeto
 

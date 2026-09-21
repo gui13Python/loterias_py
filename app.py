@@ -8,7 +8,7 @@ pode escolher manualmente parte (ou todas) as dezenas de cada jogo.
 import random
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="public", static_url_path="")
 
 CFG = {
     "lotofacil": {"total": 25, "pick": 15, "nome": "Lotofácil"},
