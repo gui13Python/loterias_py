@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aposta Certa — Gerador de Jogos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">Aposta<em>Certa</em></div>
+  </header>
+
+  <h1>Monte seu jogo em segundos</h1>
+  <p class="sub">Escolha suas dezenas de sorte ou deixe o gerador completar o resto com filtros estatísticos.</p>
+
+  <div class="segmented">
+    <a href="{{ url_for('index', game='lotofacil') }}" class="{{ 'active lotofacil' if game == 'lotofacil' else '' }}">Lotofácil</a>
+    <a href="{{ url_for('index', game='megasena') }}" class="{{ 'active megasena' if game == 'megasena' else '' }}">Mega-Sena</a>
+  </div>
+
+  {% if erro %}
+    <div class="alert">{{ erro }}</div>
+  {% endif %}
+
+  <form method="POST" action="{{ url_for('index') }}">
+    <input type="hidden" name="game" value="{{ game }}">
+
+    <div class="card">
+      <div class="field-label">
+        <span>Dezenas manuais (opcional, até {{ pick }})</span>
+        <span class="counter" id="counter">{{ fixas_selecionadas|length }}/{{ pick }}</span>
+      </div>
+      <div class="pick-grid cols-{{ 10 if total > 25 else 5 }}">
+        {% for n in range(1, total + 1) %}
+          <label class="pick {{ game }} {{ 'selected' if n in fixas_selecionadas else '' }}">
+            <input type="checkbox" name="fixa" value="{{ n }}" {{ 'checked' if n in fixas_selecionadas else '' }}>
+            {{ '%02d' % n }}
+          </label>
+        {% endfor %}
+      </div>
+      <div class="pick-hint">Deixe em branco pra sorteio 100% automático, marque algumas pra garantir no jogo, ou marque todas as {{ pick }} pra montar o jogo você mesmo.</div>
+    </div>
+
+    <button type="submit" class="go-btn {{ game }}">Gerar jogo</button>
+  </form>
+
+  <div class="card" id="resultCard">
+    {% if resultado %}
+      {% if resultado.manual_completo %}
+        <div class="tag-info">
+          {{ 'Seu jogo bate com os filtros estatísticos ✓' if resultado.passou else 'Seu jogo foi montado manualmente — não bate com todos os filtros estatísticos, mas é válido pra jogar' }}
+        </div>
+      {% endif %}
+      <div class="result-balls">
+        {% for n in resultado.jogo_fmt %}
+          <div class="ball {{ game }}">{{ n }}</div>
+        {% endfor %}
+      </div>
+      <div class="stats">
+        {% for s in resultado.stats %}
+          <div class="stat">
+            <div class="num">{{ s.valor }}</div>
+            <div class="lab">{{ s.label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      {% if not resultado.manual_completo %}
+        <div class="pick-hint" style="text-align:center; margin-top:14px;">Encontrado em {{ resultado.tentativas }} tentativa(s) de sorteio.</div>
+      {% endif %}
+    {% else %}
+      <div class="empty-state">Seu jogo aparece aqui assim que você gerar.</div>
+    {% endif %}
+  </div>
+
+  <p class="disclaimer">Os filtros aplicados (paridade, primos, moldura, soma) refletem padrões estatísticos comuns nos sorteios anteriores, mas não alteram a probabilidade matemática de nenhuma combinação. Jogue com responsabilidade.</p>
+
+</div>
+
+<script>
+  // Limita a seleção manual a `pick` dezenas e atualiza o contador
+  (function () {
+    var pick = {{ pick }};
+    var boxes = document.querySelectorAll('.pick input[type=checkbox]');
+    var counter = document.getElementById('counter');
+
+    function atualizarContador() {
+      var marcados = document.querySelectorAll('.pick input[type=checkbox]:checked').length;
+      counter.textContent = marcados + '/' + pick;
+    }
+
+    boxes.forEach(function (box) {
+      box.addEventListener('change', function () {
+        var marcados = document.querySelectorAll('.pick input[type=checkbox]:checked').length;
+        if (marcados > pick) {
+          box.checked = false;
+        }
+        box.closest('.pick').classList.toggle('selected', box.checked);
+        atualizarContador();
+      });
+    });
+  })();
+</script>
+</body>
+</html>
