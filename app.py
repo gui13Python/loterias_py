@@ -156,6 +156,7 @@ def index():
         fixas_selecionadas=fixas_selecionadas,
         resultado=resultado,
         erro=erro,
+        moldura_lotofacil=sorted(MOLDURA_LOTOFACIL),
     )
 
 
